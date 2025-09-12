@@ -69,12 +69,14 @@ h1 {
 h2 {
   font-size: 3.6rem;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 h3 {
   font-size: 2.4rem;
   font-weight: 600;
   margin-bottom: 4rem;
+  text-align: center;
 }
 
 h4 {
@@ -142,6 +144,10 @@ progress {
 
 .btn-ui {
   float: right;
+}
+.ui-container {
+  display: flex;
+  justify-content: center;
 }
 
 .options {
@@ -256,4 +262,9 @@ progress {
 .counter * {
   font-size: inherit;
   padding: 0.8rem;
+}
+.btn-option.wrong-select {
+  background: #c92a2a !important;
+  border: none;
+  color: white;
 }
