@@ -5,6 +5,8 @@ import Loader from "./Loader.js";
 import Error from "./Error.js";
 import StartScreen from "./StartScreen.js";
 import Question from "./Question.js";
+import Progress from "./Progress.js";
+import FinishScreen from "./FinishScreen.js";
 
 let initState = {
   questions: [],
@@ -13,6 +15,7 @@ let initState = {
   index: 0,
   newAnswer: null,
   points: 0,
+  highScore: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -45,8 +48,22 @@ function reducer(state, action) {
     case "next-question":
       return {
         ...state,
-        index: ++state.index,
+        index: state.index + 1,
         newAnswer: null,
+      };
+    case "finish":
+      return {
+        ...state,
+        status: "finished",
+        highScore:
+          state.points > state.highScore ? state.points : state.highScore,
+      };
+    case "restart":
+      return {
+        ...initState,
+        questions: state.questions,
+        status: "ready",
+        highScore: state.highScore,
       };
 
     default:
@@ -54,11 +71,10 @@ function reducer(state, action) {
   }
 }
 export default function App() {
-  const [{ status, questions, index, newAnswer }, dispatch] = useReducer(
-    reducer,
-    initState
-  );
+  const [{ status, questions, index, newAnswer, points, highScore }, dispatch] =
+    useReducer(reducer, initState);
   let numQuestions = questions.length;
+  let maxPoints = questions.reduce((acc, question) => acc + question.points, 0);
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -78,20 +94,47 @@ export default function App() {
         )}
         {status === "active" && (
           <>
+            <Progress
+              index={index}
+              numQuestions={numQuestions}
+              maxPoints={maxPoints}
+              points={points}
+              newAnswer={newAnswer}
+            />
             <Question
               question={questions[index]}
               dispatch={dispatch}
               newAnswer={newAnswer}
             />
-            {newAnswer && (
+            {newAnswer !== null && index < numQuestions - 1 ? (
               <button
                 className="btn btn-ui"
                 onClick={() => dispatch({ type: "next-question" })}
               >
                 Next
               </button>
+            ) : (
+              ""
+            )}
+            {index === numQuestions - 1 ? (
+              <button
+                className="btn btn-ui"
+                onClick={() => dispatch({ type: "finish" })}
+              >
+                Finish Quiz
+              </button>
+            ) : (
+              ""
             )}
           </>
+        )}
+        {status === "finished" && (
+          <FinishScreen
+            points={points}
+            maxPoints={maxPoints}
+            highScore={highScore}
+            dispatch={dispatch}
+          />
         )}
       </Main>
     </div>

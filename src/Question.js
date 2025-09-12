@@ -10,11 +10,15 @@ function Question({ question, dispatch, newAnswer }) {
                 ? `answer ${i !== question.correctOption ? "wrong-select" : ""}`
                 : ""
             } ${
-              newAnswer && (i === question.correctOption ? "correct" : "wrong")
+              newAnswer !== null
+                ? i === question.correctOption
+                  ? "correct"
+                  : "wrong"
+                : ""
             }`}
             key={option}
             onClick={() => dispatch({ type: "new-answer", payload: i })}
-            disabled={newAnswer}
+            disabled={newAnswer !== null}
           >
             {option}
           </button>
