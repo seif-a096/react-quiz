@@ -2,7 +2,7 @@
 
 > A fun and interactive quiz application built with React to test your knowledge of the framework.
 
-[![Live Deployment](https://img.shields.io/badge/Live%20Demo-brightgreen)](https://your-deployment-url-here.com)
+[![Live Deployment](https://img.shields.io/badge/Live%20Demo-brightgreen)](https://s096-react-quiz.netlify.app/)
 
 ---
 
@@ -36,7 +36,7 @@ To run this project locally, you'll need Node.js and npm installed.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/seif-a096/react-quiz)
     ```
 2.  **Navigate to the project directory:**
     ```bash
