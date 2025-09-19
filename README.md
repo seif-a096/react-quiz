@@ -36,7 +36,7 @@ To run this project locally, you'll need Node.js and npm installed.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/seif-a096/react-quiz)
+    git clone https://github.com/seif-a096/react-quiz
     ```
 2.  **Navigate to the project directory:**
     ```bash
@@ -57,22 +57,25 @@ To run this project locally, you'll need Node.js and npm installed.
 ### File Structure
 
 A quick overview of the key components and files:
+
+```text
 .
 ├── public/
-│ └── logo512.png
+│   └── logo512.png
 ├── src/
-│ ├── components/
-│ │ ├── Error.js
-│ │ ├── FinishScreen.js
-│ │ ├── Header.js
-│ │ ├── Loader.js
-│ │ ├── Main.js
-│ │ ├── Progress.js
-│ │ ├── Question.js
-│ │ ├── StartScreen.js
-│ │ └── Timer.js
-│ ├── App.js
-│ ├── index.css
-│ └── index.js
+│   ├── components/
+│   │   ├── Error.js
+│   │   ├── FinishScreen.js
+│   │   ├── Header.js
+│   │   ├── Loader.js
+│   │   ├── Main.js
+│   │   ├── Progress.js
+│   │   ├── Question.js
+│   │   ├── StartScreen.js
+│   │   └── Timer.js
+│   ├── App.js
+│   ├── index.css
+│   └── index.js
 ├── package.json
 └── README.md
+```
