@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Loader from "./Loader.js";
@@ -7,7 +7,8 @@ import StartScreen from "./StartScreen.js";
 import Question from "./Question.js";
 import Progress from "./Progress.js";
 import FinishScreen from "./FinishScreen.js";
-
+import Timer from "./Timer.js";
+const SECS_Per_Question = 30;
 let initState = {
   questions: [],
   // loading ,error ,ready, active ,finished
@@ -16,6 +17,7 @@ let initState = {
   newAnswer: null,
   points: 0,
   highScore: 0,
+  time: 0,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -34,6 +36,7 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
+        time: state.questions.length * SECS_Per_Question,
       };
     case "new-answer":
       let question = state.questions[state.index];
@@ -65,21 +68,30 @@ function reducer(state, action) {
         status: "ready",
         highScore: state.highScore,
       };
-
+    case "tick":
+      return {
+        ...state,
+        time: state.time - 1,
+        status: state.time === 0 ? "finish" : state.status,
+      };
     default:
       return state;
   }
 }
 export default function App() {
-  const [{ status, questions, index, newAnswer, points, highScore }, dispatch] =
-    useReducer(reducer, initState);
+  const [
+    { status, questions, index, newAnswer, points, highScore, time },
+    dispatch,
+  ] = useReducer(reducer, initState);
   let numQuestions = questions.length;
   let maxPoints = questions.reduce((acc, question) => acc + question.points, 0);
 
   useEffect(function () {
-    fetch("http://localhost:8000/questions")
+    fetch("/data/questions.json")
       .then((res) => res.json())
-      .then((data) => dispatch({ type: "data-recieved", payload: data }))
+      .then((data) =>
+        dispatch({ type: "data-recieved", payload: data.questions })
+      )
       .catch((err) => dispatch({ type: "data-failed" }));
   }, []);
 
@@ -106,16 +118,19 @@ export default function App() {
               dispatch={dispatch}
               newAnswer={newAnswer}
             />
-            {newAnswer !== null && index < numQuestions - 1 ? (
-              <button
-                className="btn btn-ui"
-                onClick={() => dispatch({ type: "next-question" })}
-              >
-                Next
-              </button>
-            ) : (
-              ""
-            )}
+            <footer>
+              <Timer time={time} dispatch={dispatch} />
+              {newAnswer !== null && index < numQuestions - 1 ? (
+                <button
+                  className="btn btn-ui"
+                  onClick={() => dispatch({ type: "next-question" })}
+                >
+                  Next
+                </button>
+              ) : (
+                ""
+              )}
+            </footer>
             {index === numQuestions - 1 ? (
               <button
                 className="btn btn-ui"
